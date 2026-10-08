@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>트릭컬 리바이브 시스템 분석 리포트</title>
+
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v3.2.1/dist/web/static/pretendard.css" />
+
+    <style>
+        :root {
+            --bg-base: #121212;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-pink: #ff6beb;
+            --accent-cyan: #00e5ff;
+            --accent-yellow: #fde047;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Glow Background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: var(--bg-base);
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--accent-pink);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent-cyan);
+            bottom: -200px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            word-break: keep-all;
+        }
+
+        .date {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: monospace;
+        }
+
+        .section-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.4s ease;
+
+            /* Initial state for scroll animation */
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .glass-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .card-intro {
+            border-top: 4px solid var(--accent-yellow);
+        }
+
+        .card-sys1 {
+            border-top: 4px solid var(--accent-cyan);
+        }
+
+        .card-sys2 {
+            border-top: 4px solid var(--accent-pink);
+        }
+
+        .card-sys3 {
+            border-top: 4px solid #a855f7;
+        }
+
+        .card-conclusion {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .card-number {
+            font-family: monospace;
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+            margin-bottom: 1.25rem;
+            word-break: keep-all;
+            line-height: 1.7;
+        }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .highlight {
+            color: var(--accent-cyan);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.25rem; }
+            .glass-card { padding: 2rem; }
+            .container { padding: 3rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="badge">SYSTEM ANALYSIS REPORT</div>
+            <h1>트릭컬 리바이브<br>시스템 분석 리포트</h1>
+            <p class="subtitle">오토배틀러 메커니즘과 인터랙티브 UI가 창출하는 압도적 유저 리텐션 구조의 이해</p>
+            <div class="date">October 2026</div>
+        </header>
+
+        <div class="section-grid">
+            <article class="glass-card card-intro observe-me">
+                <span class="card-number">00. INTRODUCTION</span>
+                <h2>단순한 귀여움, 그 이상의 전략적 깊이</h2>
+                <p>
+                    《트릭컬 리바이브》는 겉보기엔 가볍고 귀여운 서브컬처 방치형 RPG의 탈을 쓰고 있지만, 그 이면에는 유저를 지속적으로 게임에 묶어두는 <strong>치밀한 시스템적 설계</strong>가 자리 잡고 있습니다.
+                </p>
+                <p>
+                    이 리포트에서는 게임이 단순히 "캐릭터가 귀여워서" 성공한 것이 아니라, <strong>1) 오토배틀러 기반의 드래프트 시스템</strong>, <strong>2) 다변화된 성격 시너지 메타</strong>, 그리고 <strong>3) '볼따구'라는 독보적인 인터랙션 UI</strong>가 어떻게 구조적으로 유저의 재방문율(Retention)과 과금(Monetization)을 유도하는지 분석합니다.
+                </p>
+            </article>
+
+            <article class="glass-card card-sys1 observe-me">
+                <span class="card-number">01. SYSTEM</span>
+                <h2>오토배틀러식 드래프트 전투 시스템</h2>
+                <p>
+                    게임의 핵심 전투는 일반적인 모바일 RPG의 '스킬 타이밍 터치' 방식을 탈피하고, <span class="highlight">오토배틀러(Auto-battler) 장르의 '드래프트(Draft)' 시스템</span>을 채용했습니다.
+                </p>
+                <p>
+                    매 웨이브마다 플레이어에게 랜덤한 사도(캐릭터), 장비, 아티팩트, 스펠이 제시되며, 플레이어는 한정된 재화(코인) 내에서 최적의 선택을 내려야 합니다. 이는 매 판마다 주어지는 패가 달라지는 <strong>로그라이크(Roguelike)적 변수 창출</strong>을 의미합니다.
+                </p>
+                <p>
+                    동일한 스테이지를 반복 클리어하더라도 매번 덱 구성 과정이 달라지기 때문에 지루함이 상쇄되며, 플레이어는 '최고의 고점'을 뽑아내기 위해 끊임없이 재도전하게 됩니다. 이러한 확률적 보상 구조는 플레이어에게 <strong>지속적인 리플레이 가치(Replayability)</strong>를 제공합니다.
+                </p>
+            </article>
+
+            <article class="glass-card card-sys2 observe-me">
+                <span class="card-number">02. SYSTEM</span>
+                <h2>TFT를 연상케 하는 성격 시너지 메타</h2>
+                <p>
+                    드래프트 시스템의 전략적 깊이를 완성하는 창구는 <strong>'성격 시너지(Personality Synergy)'</strong>입니다. 사도들은 '광기', '우울', '냉정', '순수', '활발' 등의 성격을 지니며, 동일한 성격을 필드에 일정 수 이상 배치할 때마다 강력한 패시브 효과가 발동됩니다.
+                </p>
+                <p>
+                    이는 라이엇 게임즈의 <em>'전략적 팀 전투(TFT)'</em>와 매우 유사한 덱 빌딩 메커니즘입니다. 유저는 초반에 주어진 패를 바탕으로 특정 시너지를 탈 것인지(예: 우울 6시너지), 아니면 고성능 단일 캐릭터 위주로 잡덱을 구성할 것인지 실시간으로 판단해야 합니다.
+                </p>
+                <p>
+                    개발사는 주기적인 밸런스 패치와 신규 캐릭터 출시를 통해 특정 성격이 주도하는 '메타(Meta)'를 계속해서 순환시킵니다. 이는 유저가 단일 덱에 머물지 않고 <strong>새로운 캐릭터를 육성하고 뽑기(Gacha)를 진행해야 하는 강력한 당위성</strong>을 부여합니다.
+                </p>
+            </article>
+
+            <article class="glass-card card-sys3 observe-me">
+                <span class="card-number">03. SYSTEM</span>
+                <h2>애착 형성의 마스터피스: '볼따구' 인터랙션</h2>
+                <p>
+                    트릭컬 리바이브를 상징하는 단 하나의 요소를 꼽자면 단연코 <strong>'볼따구(Cheek-pulling) 시스템'</strong>입니다. 유저가 로비나 UI 상에서 캐릭터의 볼을 터치하고 드래그하면, 2D 물리 엔진 메쉬 변형을 통해 볼이 쫀득하게 늘어나는 시각적, 촉각적 피드백을 제공합니다.
+                </p>
+                <p>
+                    이 인터랙션은 단순한 이스터에그가 아닙니다. 모바일 환경의 '터치'라는 본질적인 행위를 극대화하여 플레이어와 캐릭터 간의 <strong>파라소셜 본드(Parasocial Bond, 일방적 유대감)</strong>를 순식간에 형성합니다. 볼을 당길 때마다 캐릭터가 우는 소리를 내거나 화를 내는 등의 실시간 리액션은 유저에게 "내가 이 세계와 직접 상호작용하고 있다"는 강렬한 몰입감을 선사합니다.
+                </p>
+                <p>
+                    이러한 밈(Meme) 친화적인 UI는 커뮤니티에서 폭발적인 바이럴을 일으켰으며, 유저들이 게임을 떠나지 못하게 만드는 <strong>가장 강력한 감성적 앵커(Anchor)</strong>로 작용합니다. 애착이 생긴 캐릭터에게 재화를 지불하는 것은 유저 입장에서 매우 자연스러운 흐름이 됩니다.
+                </p>
+            </article>
+
+            <article class="glass-card card-conclusion observe-me">
+                <span class="card-number">04. CONCLUSION</span>
+                <h2>결론: 이성과 감성을 모두 충족시킨 설계</h2>
+                <p>
+                    《트릭컬 리바이브》의 성공은 결코 우연이 아닙니다. <strong>드래프트 및 시너지 시스템</strong>이 게임을 계속 붙잡고 있게 만드는 '이성적이고 전략적인 재미(두뇌)'를 담당한다면, <strong>볼따구 인터랙션</strong>은 캐릭터에 지갑을 열게 만드는 '감성적인 애착(가슴)'을 담당합니다.
+                </p>
+                <p>
+                    하드코어한 전략성과 직관적이고 감각적인 UI의 완벽한 융합. 이것이 바로 수많은 경쟁작 사이에서 트릭컬이 독보적인 리텐션과 팬덤을 구축할 수 있었던 게임 디자인적 핵심 비결입니다.
+                </p>
+            </article>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Animate only once
+                    }
+                });
+            }, observerOptions);
+
+            const cards = document.querySelectorAll('.observe-me');
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
