@@ -6,235 +6,245 @@
     <title>트릭컬 리바이브 재미요소 분석 리포트</title>
     <meta name="description" content="트릭컬 리바이브의 스토리·캐릭터 중심 라이브 서비스 루프가 사용자를 붙잡는 방식을 분석한 게임 분석 리포트">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 
     <script>document.documentElement.className += ' js';</script>
     <style>
         :root {
-            --bg: #0f1115;
-            --bg-soft: #161922;
-            --text: #eef1f6;
-            --text-sub: #b4bccb;
-            --text-mute: #8590a3;
-            --line: rgba(255, 255, 255, 0.09);
-            --card: rgba(255, 255, 255, 0.035);
-            --cyan: #38e1ff;
-            --pink: #ff7ae8;
-            --yellow: #ffd84d;
-            --green: #6ee7a8;
-            --radius: 20px;
+            --paper: #fff7e4;
+            --paper-2: #fdeec8;
+            --ink: #3a2e2a;
+            --ink-soft: #6a5a52;
+            --ink-mute: #92827a;
+            --green: #a9dc8e;
+            --green-d: #5fae4a;
+            --yellow: #ffd95a;
+            --pink: #ffa9c0;
+            --blue: #9bd6f2;
+            --lilac: #cbb9ff;
+            --white: #ffffff;
+            --line: 2.5px solid var(--ink);
+            --shadow: 5px 5px 0 var(--ink);
+            --shadow-s: 3px 3px 0 var(--ink);
+            --display: 'Jua', 'Pretendard', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+        html { scroll-behavior: smooth; scroll-padding-top: 84px; }
 
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.75;
+            background-color: var(--paper);
+            background-image: radial-gradient(rgba(58, 46, 42, 0.09) 1.2px, transparent 1.2px);
+            background-size: 22px 22px;
+            color: var(--ink);
+            line-height: 1.8;
             word-break: keep-all;
             -webkit-font-smoothing: antialiased;
         }
 
-        body::before {
-            content: "";
-            position: fixed; inset: 0; z-index: -1;
-            background:
-                radial-gradient(900px 500px at 8% -5%, rgba(255, 122, 232, 0.13), transparent 60%),
-                radial-gradient(800px 500px at 100% 20%, rgba(56, 225, 255, 0.10), transparent 60%),
-                var(--bg);
-        }
-
-        a { color: var(--cyan); text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        a { color: inherit; }
         img { max-width: 100%; display: block; }
+        ::selection { background: var(--yellow); color: var(--ink); }
 
         /* ---------- progress + nav ---------- */
-        .progress {
-            position: fixed; top: 0; left: 0; height: 3px; width: 0;
-            background: linear-gradient(90deg, var(--pink), var(--cyan));
-            z-index: 60;
-        }
+        .progress { position: fixed; top: 0; left: 0; height: 6px; width: 0; background: var(--pink); border-right: var(--line); z-index: 60; }
 
-        .topnav {
-            position: sticky; top: 0; z-index: 50;
-            background: rgba(15, 17, 21, 0.82);
-            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid var(--line);
-        }
-        .topnav-inner {
-            max-width: 1080px; margin: 0 auto; padding: 0 20px;
-            display: flex; align-items: center; gap: 22px; height: 56px;
-            overflow-x: auto; scrollbar-width: none;
-        }
+        .topnav { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: var(--line); }
+        .topnav-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; gap: 6px; height: 58px; overflow-x: auto; scrollbar-width: none; }
         .topnav-inner::-webkit-scrollbar { display: none; }
-        .brand { font-weight: 800; font-size: 0.95rem; white-space: nowrap; color: var(--text); letter-spacing: -0.01em; }
-        .topnav a.nav-link {
-            color: var(--text-mute); font-size: 0.86rem; font-weight: 600; white-space: nowrap; padding: 4px 0;
-            border-bottom: 2px solid transparent; transition: color .2s, border-color .2s;
-        }
-        .topnav a.nav-link:hover { color: var(--text); text-decoration: none; }
-        .topnav a.nav-link.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+        .brand { font-family: var(--display); font-size: 1.15rem; white-space: nowrap; margin-right: 12px; display: flex; align-items: center; gap: 8px; }
+        .brand i { width: 22px; height: 22px; background: var(--green); border: var(--line); border-radius: 50% 50% 50% 8px; display: inline-block; transform: rotate(-12deg); }
+        .nav-link { font-size: 0.9rem; font-weight: 700; text-decoration: none; white-space: nowrap; padding: 4px 12px; border-radius: 999px; border: 2px solid transparent; color: var(--ink-soft); transition: background .15s, border-color .15s; }
+        .nav-link:hover { border-color: var(--ink); color: var(--ink); }
+        .nav-link.active { background: var(--yellow); border-color: var(--ink); color: var(--ink); }
 
-        .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
         /* ---------- hero ---------- */
-        .hero { padding: 84px 0 56px; }
-        .eyebrow {
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; color: var(--cyan);
-            border: 1px solid rgba(56, 225, 255, 0.35); background: rgba(56, 225, 255, 0.08);
-            padding: 6px 14px; border-radius: 999px; margin-bottom: 22px;
-        }
-        h1 {
-            font-size: clamp(2rem, 5.4vw, 3.4rem); line-height: 1.22; letter-spacing: -0.03em; font-weight: 800;
-            margin-bottom: 18px;
-        }
-        h1 em { font-style: normal; background: linear-gradient(120deg, var(--pink), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .lead { font-size: 1.15rem; color: var(--text-sub); max-width: 720px; }
+        .hero { padding: 64px 0 40px; display: grid; grid-template-columns: 1.05fr 1fr; gap: 44px; align-items: center; }
+        .kicker { display: inline-block; font-weight: 800; font-size: 0.86rem; letter-spacing: 0.04em; background: var(--green); border: var(--line); border-radius: 999px; padding: 4px 16px; box-shadow: var(--shadow-s); transform: rotate(-2deg); margin-bottom: 22px; }
+        h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.3rem, 6vw, 4rem); line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 20px; }
+        h1 mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yellow) 92%, transparent 92%); color: inherit; padding: 0 4px; }
+        .lead { font-size: 1.12rem; color: var(--ink-soft); max-width: 520px; }
+        .lead strong { color: var(--ink); background: linear-gradient(transparent 62%, var(--pink) 62%); }
 
-        .meta {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px;
-            margin-top: 34px;
-        }
-        .meta div { border: 1px solid var(--line); background: var(--card); border-radius: 14px; padding: 14px 16px; }
-        .meta dt { font-size: 0.74rem; color: var(--text-mute); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 2px; }
-        .meta dd { font-size: 0.97rem; font-weight: 600; }
+        .meta { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 26px; }
+        .meta span { font-size: 0.84rem; font-weight: 700; background: var(--white); border: 2px solid var(--ink); border-radius: 10px; padding: 3px 12px; }
+        .meta b { color: var(--ink-mute); font-weight: 700; margin-right: 6px; }
 
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-top: 26px; }
-        .stat { border-radius: 16px; padding: 20px; border: 1px solid var(--line); background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)); }
-        .stat .num { font-size: 2.3rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
-        .stat .num small { font-size: 1rem; font-weight: 700; color: var(--text-sub); margin-left: 3px; }
-        .stat .lbl { font-size: 0.86rem; color: var(--text-sub); margin-top: 6px; }
-        .stat:nth-child(1) .num { color: var(--yellow); }
-        .stat:nth-child(2) .num { color: var(--cyan); }
-        .stat:nth-child(3) .num { color: var(--pink); }
-        .stat:nth-child(4) .num { color: var(--green); }
-        .stat-note { font-size: 0.8rem; color: var(--text-mute); margin-top: 12px; }
+        .collage { position: relative; height: 420px; }
+        .photo { position: absolute; background: var(--white); border: var(--line); padding: 8px 8px 30px; box-shadow: var(--shadow); border-radius: 6px; }
+        .photo img { border: 2px solid var(--ink); aspect-ratio: 16 / 9; object-fit: cover; width: 100%; }
+        .photo::before { content: ""; position: absolute; top: -13px; left: 50%; width: 76px; height: 24px; margin-left: -38px; background: rgba(255, 217, 90, 0.85); border: 2px solid var(--ink); transform: rotate(-4deg); }
+        .photo.p1 { width: 330px; top: 4px; left: 0; transform: rotate(-5deg); }
+        .photo.p2 { width: 300px; top: 130px; right: 0; transform: rotate(4deg); z-index: 2; }
+        .photo.p2::before { background: rgba(255, 169, 192, 0.9); transform: rotate(5deg); }
+        .photo.p3 { width: 290px; bottom: 0; left: 36px; transform: rotate(-2deg); z-index: 3; }
+        .photo.p3::before { background: rgba(169, 220, 142, 0.9); }
+        .photo.p1, .photo.p2 { padding-bottom: 8px; }
+        .photo.p1 figcaption, .photo.p2 figcaption { display: none; }
+        .photo figcaption { position: absolute; bottom: 5px; left: 0; right: 0; text-align: center; font-family: var(--display); font-size: 0.86rem; color: var(--ink-soft); padding: 0; }
+
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 16px 0 6px; }
+        .stat { border: var(--line); border-radius: 18px; padding: 16px 18px; box-shadow: var(--shadow); }
+        .stat:nth-child(1) { background: var(--yellow); transform: rotate(-1.2deg); }
+        .stat:nth-child(2) { background: var(--blue); transform: rotate(0.8deg); }
+        .stat:nth-child(3) { background: var(--pink); transform: rotate(-0.6deg); }
+        .stat:nth-child(4) { background: var(--green); transform: rotate(1deg); }
+        .stat .num { font-family: var(--display); font-size: 2.5rem; line-height: 1.15; }
+        .stat .num small { font-size: 1.05rem; margin-left: 2px; }
+        .stat .lbl { font-size: 0.86rem; font-weight: 700; }
+        .stat-note { font-size: 0.82rem; color: var(--ink-mute); margin: 14px 0 0; }
 
         /* ---------- sections ---------- */
-        section { padding: 56px 0; border-top: 1px solid var(--line); }
-        .sec-no { font-family: ui-monospace, 'SF Mono', Consolas, monospace; font-size: 0.82rem; color: var(--text-mute); letter-spacing: 0.1em; }
-        h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); letter-spacing: -0.02em; line-height: 1.3; margin: 6px 0 20px; }
-        h3 { font-size: 1.2rem; letter-spacing: -0.01em; margin: 30px 0 10px; }
-        p { color: var(--text-sub); margin-bottom: 14px; font-size: 1.04rem; }
-        p strong, li strong { color: var(--text); font-weight: 700; }
-        ul.plain { padding-left: 1.2em; color: var(--text-sub); margin-bottom: 14px; }
+        section { padding: 60px 0 20px; }
+        .sec-head { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
+        .sec-no { flex: none; width: 58px; height: 58px; display: grid; place-items: center; font-family: var(--display); font-size: 1.5rem; border: var(--line); border-radius: 50%; background: var(--green); box-shadow: var(--shadow-s); }
+        section:nth-of-type(even) .sec-no { background: var(--pink); }
+        section:nth-of-type(3n) .sec-no { background: var(--blue); }
+        .sec-eyebrow { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; color: var(--ink-mute); }
+        h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.25; }
+        h3 { font-family: var(--display); font-weight: 400; font-size: 1.35rem; margin: 30px 0 10px; }
+        p { margin-bottom: 14px; font-size: 1.05rem; color: var(--ink-soft); }
+        p strong, li strong { color: var(--ink); font-weight: 800; }
+        ul.plain { padding-left: 1.2em; color: var(--ink-soft); margin-bottom: 14px; }
         ul.plain li { margin-bottom: 6px; }
+        sup.ref a { font-size: 0.72rem; font-weight: 800; text-decoration: none; color: var(--green-d); margin-left: 2px; }
+        sup.ref a:hover { text-decoration: underline; }
 
-        .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1); }
+        .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1.2); }
         .js .reveal.in { opacity: 1; transform: none; }
 
-        /* labels */
-        .tag {
-            display: inline-block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.07em;
-            padding: 2px 8px; border-radius: 6px; margin-right: 8px; vertical-align: 2px; white-space: nowrap;
-        }
-        .tag.fact { color: var(--cyan); background: rgba(56, 225, 255, 0.12); border: 1px solid rgba(56, 225, 255, 0.3); }
-        .tag.analysis { color: var(--pink); background: rgba(255, 122, 232, 0.12); border: 1px solid rgba(255, 122, 232, 0.3); }
-        .tag.proposal { color: var(--yellow); background: rgba(255, 216, 77, 0.12); border: 1px solid rgba(255, 216, 77, 0.3); }
-        .tag.claim { color: var(--text-sub); background: rgba(255,255,255,0.06); border: 1px solid var(--line); }
-        sup.ref a { font-size: 0.72rem; font-weight: 700; margin-left: 2px; }
+        /* stamp tags */
+        .tag { display: inline-block; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; padding: 1px 8px; margin-right: 8px; vertical-align: 2px; border: 2px solid var(--ink); border-radius: 6px; white-space: nowrap; color: var(--ink); }
+        .tag.fact { background: var(--blue); }
+        .tag.claim { background: var(--white); }
+        .tag.analysis { background: var(--pink); }
+        .tag.proposal { background: var(--yellow); }
 
-        .legend { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 18px 0 6px; font-size: 0.86rem; color: var(--text-mute); }
+        .legend { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 22px 0 0; font-size: 0.86rem; color: var(--ink-soft); font-weight: 600; }
 
         /* summary */
-        .summary { border: 1px solid rgba(255, 122, 232, 0.35); background: linear-gradient(160deg, rgba(255,122,232,0.09), rgba(56,225,255,0.04)); border-radius: var(--radius); padding: 28px; }
-        .summary h3 { margin-top: 0; }
-        .summary ol { padding-left: 1.3em; color: var(--text-sub); }
-        .summary li { margin-bottom: 10px; }
+        .summary { position: relative; background: var(--white); border: var(--line); border-radius: 22px; padding: 32px 32px 26px; box-shadow: var(--shadow); }
+        .summary::before { content: "핵심 주장"; position: absolute; top: -16px; left: 24px; font-family: var(--display); font-size: 1.05rem; background: var(--yellow); border: var(--line); border-radius: 999px; padding: 1px 18px; transform: rotate(-2deg); }
+        .summary p { color: var(--ink); font-size: 1.12rem; }
+        .summary ol { list-style: none; counter-reset: s; margin-top: 8px; }
+        .summary li { counter-increment: s; position: relative; padding-left: 44px; margin-bottom: 12px; color: var(--ink-soft); }
+        .summary li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 30px; height: 30px; display: grid; place-items: center; font-family: var(--display); font-size: 1rem; background: var(--green); border: 2px solid var(--ink); border-radius: 50%; color: var(--ink); }
+        .summary li:nth-child(2)::before { background: var(--pink); }
+        .summary li:nth-child(3)::before { background: var(--blue); }
+        .summary li:nth-child(4)::before { background: var(--yellow); }
 
         /* table */
-        .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; margin: 14px 0 18px; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 520px; }
-        th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
-        th { color: var(--text-mute); font-size: 0.78rem; letter-spacing: 0.05em; font-weight: 700; background: rgba(255,255,255,0.03); }
-        td { color: var(--text-sub); }
-        td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+        .table-wrap { overflow-x: auto; border: var(--line); border-radius: 16px; background: var(--white); box-shadow: var(--shadow); margin: 16px 5px 24px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.97rem; min-width: 540px; }
+        th, td { text-align: left; padding: 13px 18px; border-bottom: 2px dashed rgba(58, 46, 42, 0.25); vertical-align: top; }
+        th { font-family: var(--display); font-weight: 400; font-size: 1rem; background: var(--paper-2); border-bottom: var(--line); }
+        td { color: var(--ink-soft); }
+        td:first-child { color: var(--ink); font-weight: 800; white-space: nowrap; }
         tr:last-child td { border-bottom: 0; }
 
         /* loop */
-        .loop { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 24px 0 10px; counter-reset: step; }
-        .step { position: relative; border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 18px 16px 16px; }
-        .step::before {
-            counter-increment: step; content: counter(step);
-            display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
-            font-size: 0.82rem; font-weight: 800; color: #0f1115; background: var(--cyan); margin-bottom: 10px;
-        }
+        .loop { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin: 28px 0 14px; counter-reset: step; }
+        .step { position: relative; background: var(--white); border: var(--line); border-radius: 18px; padding: 44px 16px 16px; box-shadow: var(--shadow-s); }
+        .step::before { counter-increment: step; content: counter(step); position: absolute; top: -20px; left: 16px; width: 42px; height: 42px; display: grid; place-items: center; font-family: var(--display); font-size: 1.25rem; background: var(--green); border: var(--line); border-radius: 50%; }
         .step:nth-child(2)::before { background: var(--pink); }
         .step:nth-child(3)::before { background: var(--yellow); }
-        .step:nth-child(4)::before { background: var(--green); }
-        .step:nth-child(5)::before { background: #b69bff; }
-        .step h4 { font-size: 1rem; margin-bottom: 6px; letter-spacing: -0.01em; }
-        .step p { font-size: 0.88rem; line-height: 1.6; margin: 0; color: var(--text-sub); }
-        .step .src { display: block; margin-top: 8px; font-size: 0.72rem; color: var(--text-mute); }
-        .step:not(:last-child)::after { content: "→"; position: absolute; right: -11px; top: 22px; color: var(--text-mute); font-weight: 800; z-index: 1; }
-        .loop-back { text-align: center; font-size: 0.86rem; color: var(--text-mute); border: 1px dashed var(--line); border-radius: 12px; padding: 8px 12px; }
+        .step:nth-child(4)::before { background: var(--blue); }
+        .step:nth-child(5)::before { background: var(--lilac); }
+        .step:not(:last-child)::after { content: ""; position: absolute; top: 0; right: -17px; width: 18px; height: 0; border-top: 3px dotted var(--ink); }
+        .step h4 { font-family: var(--display); font-weight: 400; font-size: 1.1rem; margin-bottom: 6px; }
+        .step p { font-size: 0.9rem; line-height: 1.65; margin: 0; }
+        .step .src { display: block; margin-top: 10px; font-size: 0.74rem; font-weight: 800; color: var(--ink-mute); }
+        .loop-back { text-align: center; font-weight: 700; font-size: 0.9rem; border: 2.5px dashed var(--ink); border-radius: 14px; padding: 10px 14px; background: var(--paper-2); }
 
-        /* figure */
-        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin: 22px 0; }
-        figure { border: 1px solid var(--line); background: var(--card); border-radius: 18px; overflow: hidden; }
-        figure button { all: unset; display: block; width: 100%; cursor: zoom-in; }
-        figure img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform .5s ease; }
-        figure button:hover img { transform: scale(1.03); }
-        figure button:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
-        .img-wrap { overflow: hidden; }
-        figcaption { padding: 16px 18px 18px; font-size: 0.92rem; color: var(--text-sub); line-height: 1.65; }
-        figcaption b { display: block; color: var(--text); font-size: 0.98rem; margin-bottom: 4px; }
-        figcaption .obs { display: block; margin-top: 8px; font-size: 0.86rem; color: var(--text-mute); }
-        .credit { font-size: 0.8rem; color: var(--text-mute); }
+        /* polaroid figures */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 40px 32px; margin: 36px 0 20px; }
+        figure.card { position: relative; background: var(--white); border: var(--line); border-radius: 8px; padding: 12px 12px 6px; box-shadow: var(--shadow); transition: transform .25s cubic-bezier(.2,.9,.3,1.3); }
+        figure.card:nth-child(odd) { transform: rotate(-1.1deg); }
+        figure.card:nth-child(even) { transform: rotate(1deg); }
+        figure.card:hover { transform: rotate(0) translateY(-4px); }
+        figure.card::before { content: ""; position: absolute; top: -13px; left: 50%; width: 80px; height: 24px; margin-left: -40px; background: rgba(255, 217, 90, 0.85); border: 2px solid var(--ink); transform: rotate(-3deg); z-index: 1; }
+        figure.card:nth-child(3n+2)::before { background: rgba(255, 169, 192, 0.9); transform: rotate(4deg); }
+        figure.card:nth-child(3n)::before { background: rgba(155, 214, 242, 0.9); }
+        figure.card button { all: unset; display: block; width: 100%; cursor: zoom-in; }
+        figure.card button:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+        .img-wrap { overflow: hidden; border: 2px solid var(--ink); border-radius: 4px; }
+        figure.card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform .5s ease; }
+        figure.card button:hover img { transform: scale(1.04); }
+        figure.card figcaption { padding: 16px 8px 14px; font-size: 0.93rem; color: var(--ink-soft); line-height: 1.7; }
+        figure.card figcaption b { display: block; font-family: var(--display); font-weight: 400; color: var(--ink); font-size: 1.12rem; margin-bottom: 4px; }
+        figure.card .obs { display: block; margin-top: 10px; padding-top: 10px; border-top: 2px dashed rgba(58, 46, 42, 0.25); font-size: 0.88rem; }
+        .credit { font-size: 0.82rem; color: var(--ink-mute); margin-top: 8px; }
 
-        dialog.lightbox { border: 0; background: transparent; max-width: 94vw; max-height: 92vh; padding: 0; }
-        dialog.lightbox::backdrop { background: rgba(0,0,0,0.88); }
-        dialog.lightbox img { max-width: 94vw; max-height: 86vh; border-radius: 12px; }
-        dialog.lightbox p { text-align: center; color: #d6dbe6; font-size: 0.9rem; margin: 10px 0 0; }
+        dialog.lightbox { border: 0; background: transparent; max-width: 94vw; max-height: 92vh; padding: 0; overflow: visible; }
+        dialog.lightbox::backdrop { background: rgba(58, 46, 42, 0.82); }
+        dialog.lightbox img { max-width: 94vw; max-height: 82vh; border: var(--line); border-radius: 10px; background: var(--white); }
+        dialog.lightbox p { text-align: center; color: var(--paper); font-weight: 700; font-size: 0.92rem; margin: 12px 0 0; }
 
         /* pillars */
-        .pillar { border: 1px solid var(--line); background: var(--card); border-radius: var(--radius); padding: 26px; margin: 18px 0; }
-        .pillar header { display: flex; gap: 14px; align-items: baseline; margin-bottom: 8px; }
-        .pillar .no { font-family: ui-monospace, Consolas, monospace; font-weight: 800; font-size: 1.5rem; color: var(--cyan); }
-        .pillar:nth-of-type(2) .no { color: var(--pink); }
-        .pillar:nth-of-type(3) .no { color: var(--yellow); }
-        .pillar:nth-of-type(4) .no { color: var(--green); }
-        .pillar h3 { margin: 0; font-size: 1.28rem; }
-        .pillar .row { margin-top: 12px; }
-        .pillar .row p { margin: 0; font-size: 1rem; }
+        .pillar { display: grid; grid-template-columns: 96px 1fr; background: var(--white); border: var(--line); border-radius: 22px; box-shadow: var(--shadow); margin: 26px 5px 26px 0; overflow: hidden; }
+        .pillar .no { display: grid; place-items: center; font-family: var(--display); font-size: 2.8rem; background: var(--green); border-right: var(--line); }
+        .pillar:nth-of-type(2) .no { background: var(--pink); }
+        .pillar:nth-of-type(3) .no { background: var(--yellow); }
+        .pillar:nth-of-type(4) .no { background: var(--blue); }
+        .pillar .body { padding: 24px 26px 18px; }
+        .pillar h3 { margin: 0 0 8px; font-size: 1.45rem; }
+        .pillar .row { margin-top: 10px; }
+        .pillar .row p { margin: 0; font-size: 1.01rem; }
 
         /* two col */
-        .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
-        .box { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 20px; }
-        .box h4 { font-size: 1rem; margin-bottom: 8px; }
-        .box.pos h4 { color: var(--green); }
-        .box.neg h4 { color: #ff8b8b; }
-        .box ul { padding-left: 1.1em; color: var(--text-sub); font-size: 0.95rem; }
-        .box li { margin-bottom: 6px; }
+        .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 22px 5px 22px 0; }
+        .box { border: var(--line); border-radius: 18px; padding: 22px 22px 14px; box-shadow: var(--shadow); background: var(--white); }
+        .box.pos { background: #eaf8dc; transform: rotate(-0.6deg); }
+        .box.neg { background: #ffe6ec; transform: rotate(0.6deg); }
+        .box h4 { font-family: var(--display); font-weight: 400; font-size: 1.2rem; margin-bottom: 8px; }
+        .box ul { padding-left: 1.1em; color: var(--ink-soft); font-size: 0.96rem; }
+        .box li { margin-bottom: 7px; }
 
-        .callout { border-left: 3px solid var(--yellow); background: rgba(255, 216, 77, 0.06); border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 18px 0; color: var(--text-sub); font-size: 0.97rem; }
-        .callout strong { color: var(--yellow); }
+        .callout { position: relative; background: var(--yellow); border: var(--line); border-radius: 6px 6px 6px 22px; padding: 16px 20px; margin: 24px 5px 24px 0; font-size: 0.98rem; color: var(--ink); font-weight: 600; box-shadow: var(--shadow-s); transform: rotate(-0.5deg); }
+        .callout strong { font-family: var(--display); font-weight: 400; font-size: 1.05rem; margin-right: 6px; }
 
         /* refs */
-        ol.refs { padding-left: 1.4em; color: var(--text-sub); font-size: 0.93rem; }
-        ol.refs li { margin-bottom: 10px; }
-        ol.refs .note { display: block; color: var(--text-mute); font-size: 0.82rem; }
+        ol.refs { padding-left: 1.5em; color: var(--ink-soft); font-size: 0.95rem; }
+        ol.refs li { margin-bottom: 12px; padding-left: 4px; }
+        ol.refs a { font-weight: 700; color: var(--ink); text-decoration-color: var(--pink); text-decoration-thickness: 3px; text-underline-offset: 3px; }
+        ol.refs .note { display: block; color: var(--ink-mute); font-size: 0.84rem; }
 
-        footer { border-top: 1px solid var(--line); padding: 34px 0 60px; color: var(--text-mute); font-size: 0.85rem; }
+        footer { margin-top: 60px; border-top: var(--line); background: var(--green); padding: 28px 0 40px; font-weight: 700; font-size: 0.9rem; }
+        footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; }
+        footer span { color: var(--ink-soft); font-weight: 600; }
 
-        @media (max-width: 900px) {
-            .loop { grid-template-columns: 1fr 1fr; }
+        @media (max-width: 960px) {
+            .hero { grid-template-columns: 1fr; gap: 28px; }
+            .collage { height: 400px; max-width: 560px; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .loop { grid-template-columns: 1fr 1fr; row-gap: 34px; }
             .step:not(:last-child)::after { display: none; }
             .cols { grid-template-columns: 1fr; }
         }
-        @media (max-width: 560px) {
-            .hero { padding-top: 56px; }
+        @media (max-width: 600px) {
+            .hero { padding-top: 40px; }
+            .collage { height: 330px; }
+            .photo.p1 { width: 240px; }
+            .photo.p2 { width: 220px; top: 96px; }
+            .photo.p3 { width: 210px; left: 12px; }
             .loop { grid-template-columns: 1fr; }
             .gallery { grid-template-columns: 1fr; }
-            .pillar, .summary { padding: 20px; }
+            .pillar { grid-template-columns: 1fr; margin-right: 0; }
+            .pillar .no { border-right: 0; border-bottom: var(--line); font-size: 2rem; padding: 6px 0; }
+            .summary { padding: 28px 20px 18px; }
+            .sec-no { width: 48px; height: 48px; font-size: 1.2rem; }
+            .table-wrap, .cols, .callout { margin-right: 0; }
         }
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
             .js .reveal { opacity: 1; transform: none; transition: none; }
-            figure img { transition: none; }
+            figure.card, figure.card img { transition: none; }
         }
     </style>
 </head>
@@ -243,7 +253,7 @@
 
     <nav class="topnav" aria-label="목차">
         <div class="topnav-inner">
-            <span class="brand">트릭컬 리바이브 분석</span>
+            <span class="brand"><i></i>트릭컬 분석</span>
             <a class="nav-link" href="#summary">요약</a>
             <a class="nav-link" href="#scope">분석 범위</a>
             <a class="nav-link" href="#structure">시스템 구조</a>
@@ -257,31 +267,35 @@
 
     <main class="wrap">
         <header class="hero">
-            <div class="eyebrow">GAME ANALYSIS REPORT · 재미요소 분석</div>
-            <h1>게임성이 아니라 <em>이야기</em>가<br>유저를 붙잡는다</h1>
-            <p class="lead">트릭컬 리바이브의 <strong>스토리·캐릭터 중심 라이브 서비스 루프</strong>가 사용자를 어떻게 다시 접속하게 만드는지, 스토어 공개 정보와 기사, 유저 리뷰를 근거로 분석했습니다.</p>
-
-            <dl class="meta">
-                <div><dt>분석 대상</dt><dd>트릭컬 리바이브 (Google Play)</dd></div>
-                <div><dt>개발·서비스</dt><dd>EPIDGames</dd></div>
-                <div><dt>분석 시스템</dt><dd>서사·캐릭터 공급 루프</dd></div>
-                <div><dt>작성 기준일</dt><dd>2026. 10. 8.</dd></div>
-            </dl>
-
-            <div class="stats" aria-label="구글 플레이 스토어 표기 수치">
-                <div class="stat"><div class="num">4.8<small>★</small></div><div class="lbl">스토어 평점</div></div>
-                <div class="stat"><div class="num">4.57<small>만</small></div><div class="lbl">스토어 리뷰 수</div></div>
-                <div class="stat"><div class="num">100<small>만+</small></div><div class="lbl">다운로드</div></div>
-                <div class="stat"><div class="num">#4</div><div class="lbl">최고 매출 롤플레잉 표기</div></div>
+            <div>
+                <span class="kicker">GAME ANALYSIS · 재미요소 분석</span>
+                <h1>게임성이 아니라<br><mark>이야기</mark>가<br>유저를 붙잡는다</h1>
+                <p class="lead">트릭컬 리바이브의 <strong>스토리·캐릭터 중심 라이브 서비스 루프</strong>가 사용자를 어떻게 다시 접속하게 만드는지, 스토어 공개 정보와 기사, 유저 리뷰를 근거로 분석했습니다.</p>
+                <div class="meta">
+                    <span><b>분석 대상</b>트릭컬 리바이브 (Google Play)</span>
+                    <span><b>서비스</b>EPIDGames</span>
+                    <span><b>분석 시스템</b>서사·캐릭터 공급 루프</span>
+                    <span><b>기준일</b>2026. 10. 8.</span>
+                </div>
             </div>
-            <p class="stat-note">※ 위 수치는 2026년 10월 8일에 확인한 Google Play 스토어 페이지 표기이며 시점에 따라 달라집니다.<sup class="ref"><a href="#ref1">[1]</a></sup></p>
+            <div class="collage" aria-hidden="true">
+                <figure class="photo p1"><img src="assets/story.jpg" alt=""><figcaption>풀더빙 스토리</figcaption></figure>
+                <figure class="photo p2"><img src="assets/battle.jpg" alt=""><figcaption>가볍게 즐기는 자동 전투</figcaption></figure>
+                <figure class="photo p3"><img src="assets/room.jpg" alt=""><figcaption>나만의 방 꾸미기</figcaption></figure>
+            </div>
         </header>
 
+        <div class="stats" aria-label="구글 플레이 스토어 표기 수치">
+            <div class="stat"><div class="num">4.8<small>★</small></div><div class="lbl">스토어 평점</div></div>
+            <div class="stat"><div class="num">4.57<small>만</small></div><div class="lbl">스토어 리뷰 수</div></div>
+            <div class="stat"><div class="num">100<small>만+</small></div><div class="lbl">다운로드</div></div>
+            <div class="stat"><div class="num">#4</div><div class="lbl">최고 매출 롤플레잉 표기</div></div>
+        </div>
+        <p class="stat-note">※ 위 수치는 2026년 10월 8일에 확인한 Google Play 스토어 페이지 표기이며 시점에 따라 달라집니다.<sup class="ref"><a href="#ref1">[1]</a></sup></p>
+
         <section id="summary" class="reveal">
-            <div class="sec-no">00 · EXECUTIVE SUMMARY</div>
-            <h2>한눈에 보는 결론</h2>
+            <div class="sec-head"><div class="sec-no">00</div><div><div class="sec-eyebrow">EXECUTIVE SUMMARY</div><h2>한눈에 보는 결론</h2></div></div>
             <div class="summary">
-                <h3>핵심 주장</h3>
                 <p>트릭컬 리바이브의 지속력은 전투의 깊이보다 <strong>캐릭터 이야기를 정해진 리듬으로 계속 공급하는 구조</strong>에서 나온다는 것이 이 리포트의 주장입니다.</p>
                 <ol>
                     <li><strong>공급 리듬이 방문 이유를 만든다.</strong> 스토어 소개문은 2주마다 신규 캐릭터와 풀더빙 스토리를 공개한다고 밝힙니다.<sup class="ref"><a href="#ref1">[1]</a></sup></li>
@@ -300,8 +314,7 @@
         </section>
 
         <section id="scope" class="reveal">
-            <div class="sec-no">01 · SCOPE</div>
-            <h2>분석 대상과 선정 이유</h2>
+            <div class="sec-head"><div class="sec-no">01</div><div><div class="sec-eyebrow">SCOPE</div><h2>분석 대상과 선정 이유</h2></div></div>
 
             <div class="table-wrap">
                 <table>
@@ -324,8 +337,7 @@
         </section>
 
         <section id="structure" class="reveal">
-            <div class="sec-no">02 · SYSTEM STRUCTURE</div>
-            <h2>서사 공급 루프의 구조</h2>
+            <div class="sec-head"><div class="sec-no">02</div><div><div class="sec-eyebrow">SYSTEM STRUCTURE</div><h2>서사 공급 루프의 구조</h2></div></div>
             <p>공개 자료를 종합하면 아래와 같은 순환이 그려집니다. 각 단계의 근거는 스토어 소개문과 기사, 유저 리뷰입니다.</p>
 
             <div class="loop" role="list">
@@ -363,12 +375,11 @@
         </section>
 
         <section id="screens" class="reveal">
-            <div class="sec-no">03 · SCREEN OBSERVATION</div>
-            <h2>공개 화면으로 읽는 게임 구조</h2>
+            <div class="sec-head"><div class="sec-no">03</div><div><div class="sec-eyebrow">SCREEN OBSERVATION</div><h2>공개 화면으로 읽는 게임 구조</h2></div></div>
             <p>아래 이미지는 Google Play 스토어에 공개된 홍보용 스크린샷입니다. 화면에 <strong>실제로 보이는 UI</strong>만 근거로 관찰 내용을 적었고, 보이지 않는 동작은 추측하지 않았습니다. 이미지를 누르면 크게 볼 수 있습니다.</p>
 
             <div class="gallery">
-                <figure>
+                <figure class="card">
                     <button type="button" data-full="assets/battle.jpg" data-cap="전투 화면: 타이머, 자동 전투 버튼, 하단 캐릭터 카드, 스펠 목록 버튼">
                         <div class="img-wrap"><img src="assets/battle.jpg" alt="트릭컬 리바이브 전투 화면. 상단에 타이머와 자동 전투 버튼, 하단에 캐릭터 카드 슬롯이 보인다." loading="lazy"></div>
                     </button>
@@ -379,7 +390,7 @@
                     </figcaption>
                 </figure>
 
-                <figure>
+                <figure class="card">
                     <button type="button" data-full="assets/story.jpg" data-cap="스토리 홍보 화면: 풀더빙 이벤트 스토리">
                         <div class="img-wrap"><img src="assets/story.jpg" alt="'다채로운 스토리' 홍보 이미지. 풀더빙 이벤트 스토리 문구와 캐릭터 일러스트가 보인다." loading="lazy"></div>
                     </button>
@@ -390,7 +401,7 @@
                     </figcaption>
                 </figure>
 
-                <figure>
+                <figure class="card">
                     <button type="button" data-full="assets/growth.jpg" data-cap="사도 성장 화면: 정보, 레벨업, 장비, 스킬, 승급, 보드 메뉴">
                         <div class="img-wrap"><img src="assets/growth.jpg" alt="사도 성장 화면. 좌측에 정보, 레벨업, 장비, 스킬, 승급, 보드 메뉴가 있고 Lv.100 달성 보상 표시가 보인다." loading="lazy"></div>
                     </button>
@@ -401,7 +412,7 @@
                     </figcaption>
                 </figure>
 
-                <figure>
+                <figure class="card">
                     <button type="button" data-full="assets/room.jpg" data-cap="교주의 방: 가구, 피규어, 포스터, 인형 꾸미기와 사도 초대">
                         <div class="img-wrap"><img src="assets/room.jpg" alt="'나만의 방 꾸미기' 화면. 교주의 방에 포스터와 선반, 인형이 배치되어 있고 하단에 창고와 사도 초대 버튼이 있다." loading="lazy"></div>
                     </button>
@@ -412,7 +423,7 @@
                     </figcaption>
                 </figure>
 
-                <figure>
+                <figure class="card">
                     <button type="button" data-full="assets/contents.jpg" data-cap="콘텐츠 소개 화면: 미니게임, PvP, 전투 화면 모음">
                         <div class="img-wrap"><img src="assets/contents.jpg" alt="'개성 만점 각양각색의 콘텐츠' 홍보 이미지. 미니게임, 승자의 줘팸터 화면, 전투 화면이 모여 있다." loading="lazy"></div>
                     </button>
@@ -427,44 +438,54 @@
         </section>
 
         <section id="factors" class="reveal">
-            <div class="sec-no">04 · ENGAGEMENT FACTORS</div>
-            <h2>사용자를 사로잡는 네 가지 요소</h2>
+            <div class="sec-head"><div class="sec-no">04</div><div><div class="sec-eyebrow">ENGAGEMENT FACTORS</div><h2>사용자를 사로잡는 네 가지 요소</h2></div></div>
 
             <article class="pillar">
-                <header><span class="no">01</span><h3>정해진 리듬의 콘텐츠 공급</h3></header>
-                <div class="row"><p><span class="tag fact">FACT</span>스토어 소개문은 신규 캐릭터와 풀더빙 스토리가 2주마다 새로 공개된다고 안내합니다.<sup class="ref"><a href="#ref1">[1]</a></sup> 3주년 업데이트(9월 24일)에서는 새 엘다인 사도 2명이 추가되고 시즌 3 스토리가 마무리되었다고 보도되었습니다.<sup class="ref"><a href="#ref4">[4]</a></sup></p></div>
-                <div class="row"><p><span class="tag analysis">ANALYSIS</span>공급 주기가 정해져 있으면 유저는 "다음에 무엇이 나올지"를 기대하며 접속 습관을 만듭니다. 시즌 단위 스토리 완결은 이어서 보고 싶은 동기도 줍니다.</p></div>
+                <div class="no">01</div>
+                <div class="body">
+                    <h3>정해진 리듬의 콘텐츠 공급</h3>
+                    <div class="row"><p><span class="tag fact">FACT</span>스토어 소개문은 신규 캐릭터와 풀더빙 스토리가 2주마다 새로 공개된다고 안내합니다.<sup class="ref"><a href="#ref1">[1]</a></sup> 3주년 업데이트(9월 24일)에서는 새 엘다인 사도 2명이 추가되고 시즌 3 스토리가 마무리되었다고 보도되었습니다.<sup class="ref"><a href="#ref4">[4]</a></sup></p></div>
+                    <div class="row"><p><span class="tag analysis">ANALYSIS</span>공급 주기가 정해져 있으면 유저는 "다음에 무엇이 나올지"를 기대하며 접속 습관을 만듭니다. 시즌 단위 스토리 완결은 이어서 보고 싶은 동기도 줍니다.</p></div>
+                </div>
             </article>
 
             <article class="pillar">
-                <header><span class="no">02</span><h3>서사 소비의 낮은 진입 비용</h3></header>
-                <div class="row"><p><span class="tag fact">FACT</span>스토어 소개문은 메인스토리와 이벤트 스토리가 전편 한국어 풀더빙이며, 전투는 자동으로 간편하게 즐길 수 있다고 설명합니다.<sup class="ref"><a href="#ref1">[1]</a></sup></p></div>
-                <div class="row"><p><span class="tag claim">CLAIM</span>스토어 리뷰에는 풀더빙이라 듣기 편하고, 보상이 좋아 무과금도 부담 없이 할 수 있다는 의견이 있습니다.<sup class="ref"><a href="#ref1">[1]</a></sup></p></div>
-                <div class="row"><p><span class="tag analysis">ANALYSIS</span>읽기 대신 듣기, 수동 대신 자동이라는 선택이 이야기 소비의 피로를 줄입니다. 이 설계는 짧은 시간만 쓰는 유저에게도 서사를 끊김 없이 공급합니다.</p></div>
+                <div class="no">02</div>
+                <div class="body">
+                    <h3>서사 소비의 낮은 진입 비용</h3>
+                    <div class="row"><p><span class="tag fact">FACT</span>스토어 소개문은 메인스토리와 이벤트 스토리가 전편 한국어 풀더빙이며, 전투는 자동으로 간편하게 즐길 수 있다고 설명합니다.<sup class="ref"><a href="#ref1">[1]</a></sup></p></div>
+                    <div class="row"><p><span class="tag claim">CLAIM</span>스토어 리뷰에는 풀더빙이라 듣기 편하고, 보상이 좋아 무과금도 부담 없이 할 수 있다는 의견이 있습니다.<sup class="ref"><a href="#ref1">[1]</a></sup></p></div>
+                    <div class="row"><p><span class="tag analysis">ANALYSIS</span>읽기 대신 듣기, 수동 대신 자동이라는 선택이 이야기 소비의 피로를 줄입니다. 이 설계는 짧은 시간만 쓰는 유저에게도 서사를 끊김 없이 공급합니다.</p></div>
+                </div>
             </article>
 
             <article class="pillar">
-                <header><span class="no">03</span><h3>캐릭터 애착을 깊게 만드는 장치</h3></header>
-                <div class="row"><p><span class="tag claim">CLAIM</span>한 리뷰는 캐릭터마다 서브스토리가 있어 애정이 생긴다고 말하고, 다른 리뷰는 캐릭터를 모으고 승급하며 키울수록 게임이 천천히 즐기는 쪽에 가깝다고 느꼈다고 씁니다.<sup class="ref"><a href="#ref1">[1]</a></sup></p></div>
-                <div class="row"><p><span class="tag fact">FACT</span>화면상으로도 캐릭터 성장 메뉴가 여러 갈래로 나뉘어 있고, 방 꾸미기에서 캐릭터를 인형이나 포스터로 전시할 수 있습니다. (3장 ③, ④ 참고)</p></div>
-                <div class="row"><p><span class="tag analysis">ANALYSIS</span>이야기로 생긴 호감을 성장과 꾸미기로 쌓게 하면 이탈 비용이 커집니다. 그만두는 일이 곧 그동안 쌓은 관계를 놓는 일이 되기 때문입니다.</p></div>
+                <div class="no">03</div>
+                <div class="body">
+                    <h3>캐릭터 애착을 깊게 만드는 장치</h3>
+                    <div class="row"><p><span class="tag claim">CLAIM</span>한 리뷰는 캐릭터마다 서브스토리가 있어 애정이 생긴다고 말하고, 다른 리뷰는 캐릭터를 모으고 승급하며 키울수록 게임이 천천히 즐기는 쪽에 가깝다고 느꼈다고 씁니다.<sup class="ref"><a href="#ref1">[1]</a></sup></p></div>
+                    <div class="row"><p><span class="tag fact">FACT</span>화면상으로도 캐릭터 성장 메뉴가 여러 갈래로 나뉘어 있고, 방 꾸미기에서 캐릭터를 인형이나 포스터로 전시할 수 있습니다. (3장 ③, ④ 참고)</p></div>
+                    <div class="row"><p><span class="tag analysis">ANALYSIS</span>이야기로 생긴 호감을 성장과 꾸미기로 쌓게 하면 이탈 비용이 커집니다. 그만두는 일이 곧 그동안 쌓은 관계를 놓는 일이 되기 때문입니다.</p></div>
+                </div>
             </article>
 
             <article class="pillar">
-                <header><span class="no">04</span><h3>게임 밖으로 넓어지는 IP</h3></header>
-                <div class="row"><p><span class="tag fact">FACT</span>인벤글로벌 기사에 따르면 애니메이션 '트릭컬 카툰 극장'이 9월 28일부터 라프텔과 ANIPLUS에서 매주 1화씩 공개되고, 10월 3일과 4일에는 3주년 오케스트라 콘서트가 열렸습니다. PC 클라이언트 개발도 발표되었습니다.<sup class="ref"><a href="#ref2">[2]</a></sup><sup class="ref"><a href="#ref4">[4]</a></sup></p></div>
-                <div class="row"><p><span class="tag analysis">ANALYSIS</span>게임을 하지 않는 시간에도 같은 캐릭터를 만나게 하는 접점입니다. 신규 유입과 복귀 유저에게 진입로가 늘어난다는 장점이 있습니다.</p></div>
+                <div class="no">04</div>
+                <div class="body">
+                    <h3>게임 밖으로 넓어지는 IP</h3>
+                    <div class="row"><p><span class="tag fact">FACT</span>인벤글로벌 기사에 따르면 애니메이션 '트릭컬 카툰 극장'이 9월 28일부터 라프텔과 ANIPLUS에서 매주 1화씩 공개되고, 10월 3일과 4일에는 3주년 오케스트라 콘서트가 열렸습니다. PC 클라이언트 개발도 발표되었습니다.<sup class="ref"><a href="#ref2">[2]</a></sup><sup class="ref"><a href="#ref4">[4]</a></sup></p></div>
+                    <div class="row"><p><span class="tag analysis">ANALYSIS</span>게임을 하지 않는 시간에도 같은 캐릭터를 만나게 하는 접점입니다. 신규 유입과 복귀 유저에게 진입로가 늘어난다는 장점이 있습니다.</p></div>
+                </div>
             </article>
         </section>
 
         <section id="voice" class="reveal">
-            <div class="sec-no">05 · USER VOICE</div>
-            <h2>유저 반응: 높은 평점과 공존하는 불만</h2>
+            <div class="sec-head"><div class="sec-no">05</div><div><div class="sec-eyebrow">USER VOICE</div><h2>유저 반응: 높은 평점과 공존하는 불만</h2></div></div>
             <p><span class="tag fact">FACT</span>스토어 평점은 4.8입니다.<sup class="ref"><a href="#ref1">[1]</a></sup> 아래는 스토어에 공개된 리뷰 3건에서 반복된 논점을 요약한 것으로, 전체 유저를 대표하지 않습니다.</p>
 
             <div class="cols">
                 <div class="box pos">
-                    <h4>긍정으로 언급된 점</h4>
+                    <h4>👍 긍정으로 언급된 점</h4>
                     <ul>
                         <li>캐릭터의 매력과 캐릭터별 서브스토리</li>
                         <li>풀더빙 메인스토리와 높은 퀄리티의 테마극장</li>
@@ -473,7 +494,7 @@
                     </ul>
                 </div>
                 <div class="box neg">
-                    <h4>부정으로 언급된 점</h4>
+                    <h4>👎 부정으로 언급된 점</h4>
                     <ul>
                         <li>자동 전투 특성상 게임성이 약하다는 평가</li>
                         <li>키우기 중심의 성장 콘텐츠가 지루하다는 의견</li>
@@ -489,15 +510,13 @@
         </section>
 
         <section id="business" class="reveal">
-            <div class="sec-no">06 · BUSINESS LINK</div>
-            <h2>서사 루프와 수익의 연결</h2>
+            <div class="sec-head"><div class="sec-no">06</div><div><div class="sec-eyebrow">BUSINESS LINK</div><h2>서사 루프와 수익의 연결</h2></div></div>
             <p><span class="tag fact">FACT</span>3주년 업데이트와 함께 최대 600회의 무료 소환 이벤트가 진행되었고, 새 엘다인 사도 2명이 추가되었습니다.<sup class="ref"><a href="#ref2">[2]</a></sup><sup class="ref"><a href="#ref4">[4]</a></sup> 같은 시기 한국 구글 플레이 매출 순위가 오른 것으로 보도되었습니다. 기사별로 순위 수치가 다르게 적혀 있어(7위, 4위) 이 리포트는 특정 순위를 단정하지 않습니다.</p>
             <p><span class="tag analysis">ANALYSIS</span>새 캐릭터 공개와 이벤트가 같은 시점에 겹치면, 이야기로 생긴 관심이 곧바로 모집 행동으로 이어질 수 있습니다. 서사 루프는 재미 장치인 동시에 수익이 발생하는 시점을 만드는 운영 장치입니다. 무료 소환 600회는 복귀 유저와 신규 유저가 루프에 들어오게 하는 입구 역할로 읽힙니다.</p>
         </section>
 
         <section id="proposal" class="reveal">
-            <div class="sec-no">07 · PROPOSAL</div>
-            <h2>개선 제안</h2>
+            <div class="sec-head"><div class="sec-no">07</div><div><div class="sec-eyebrow">PROPOSAL</div><h2>개선 제안</h2></div></div>
             <p>분석에서 드러난 약점을 기준으로 작성자가 제안하는 방향입니다. 실제 적용 가능성이나 개발 비용은 검토하지 않았습니다.</p>
 
             <div class="table-wrap">
@@ -514,8 +533,7 @@
         </section>
 
         <section id="conclusion" class="reveal">
-            <div class="sec-no">08 · CONCLUSION</div>
-            <h2>결론</h2>
+            <div class="sec-head"><div class="sec-no">08</div><div><div class="sec-eyebrow">CONCLUSION</div><h2>결론</h2></div></div>
             <p>트릭컬 리바이브는 전투의 깊이로 승부하는 게임이라기보다, <strong>이야기와 캐릭터를 정해진 리듬으로 공급해 접속 이유를 만드는 서비스</strong>에 가깝습니다. 풀더빙과 자동 전투는 서사 소비를 쉽게 만들고, 서브스토리와 성장·꾸미기는 애착을 쌓고, 애니메이션과 공연은 그 애착을 게임 밖으로 넓힙니다.</p>
             <p>이 구조의 강점은 유저가 게임성의 약점을 감수하게 만든다는 점이고, 약점은 그 모든 가치가 신규 캐릭터 가챠라는 한 지점의 비용으로 모인다는 점입니다. 서사 루프가 앞으로도 유지되려면 이 지점에서 신뢰를 지키는 것이 중요합니다.</p>
 
@@ -538,8 +556,7 @@
         </section>
 
         <section id="sources" class="reveal">
-            <div class="sec-no">REFERENCES</div>
-            <h2>출처</h2>
+            <div class="sec-head"><div class="sec-no">+</div><div><div class="sec-eyebrow">REFERENCES</div><h2>출처</h2></div></div>
             <ol class="refs">
                 <li id="ref1"><a href="https://play.google.com/store/apps/details?id=com.epidgames.trickcalrevive&hl=ko" target="_blank" rel="noopener">Google Play, 트릭컬 리바이브 (EPIDGames)</a>
                     <span class="note">스토어 소개문, 평점·다운로드·리뷰 수, 유저 리뷰, 홍보 스크린샷 · 2026.10.08 확인</span></li>
@@ -555,7 +572,8 @@
 
     <footer>
         <div class="wrap">
-            트릭컬 리바이브 재미요소 분석 리포트 · 2026. 10. 8. · 게임 및 이미지의 저작권은 EPIDGames에 있습니다.
+            <div>트릭컬 리바이브 재미요소 분석 리포트 · 2026. 10. 8.</div>
+            <span>게임 및 이미지의 저작권은 EPIDGames에 있습니다.</span>
         </div>
     </footer>
 
